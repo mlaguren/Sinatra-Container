@@ -6,21 +6,22 @@ jobs:
     name: Build
     runs-on: ubuntu-20.04
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Build an image from Dockerfile
-      run: docker build -t sinatrarb .
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-      image-ref: 'sinatrarb'
-      format: 'table'
-      exit-code: '1'
-      ignore-unfixed: true
-      vuln-type: 'os,library'
-      severity: 'CRITICAL,HIGH'
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t sinatrarb .
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'sinatrarb'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
   test:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
       steps:
         - uses: actions/checkout@v3
         - uses: ruby/setup-ruby@v1
